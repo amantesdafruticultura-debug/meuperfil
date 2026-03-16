@@ -1,0 +1,97 @@
+
+
+<html>
+
+<head>
+    <title>Mini Game - Pegue o Quadrado</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            text-align: center;
+            background-color: #222;
+            color: white;
+        }
+
+        .areaJogoLayout {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background-color: #333;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .alvoLayout {
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            position: absolute;
+            display: none;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🎮 Pegue o Quadrado!</h1>
+    <p>Clique no quadrado vermelho o máximo que conseguir em 15
+        segundos!</p>
+
+    <h2>Pontos: <span id="pontos">0</span></h2>
+    <h3 id="tempo">Tempo: 15</h3>
+
+    <div id="areaJogo" class="areaJogoLayout">
+        <div id="alvo" onclick="marcarPonto()" class="alvoLayout"></div>
+    </div>
+
+    <script>
+        let pontos = 0;
+        let tempoRestante = 15;
+        let jogoAtivo = true;
+
+        let alvo = document.getElementById("alvo");
+        let area = document.getElementById("areaJogo");
+
+        function moverAlvo() {
+            let larguraMax = area.clientWidth - 50;
+            let alturaMax = area.clientHeight - 50;
+
+            let novaEsquerda = Math.random() * larguraMax;
+            let novaAltura = Math.random() * alturaMax;
+
+            alvo.style.left = novaEsquerda + "px";
+            alvo.style.top = novaAltura + "px";
+        }
+
+        function marcarPonto() {
+            if (jogoAtivo) {
+                pontos++;
+                document.getElementById("pontos").innerHTML = pontos;
+                moverAlvo();
+            }
+        }
+
+        function iniciarJogo() {
+            alvo.style.display = "block";
+            moverAlvo();
+
+            let intervalo = setInterval(function () {
+                tempoRestante--;
+                document.getElementById("tempo").innerHTML = "Tempo: " + tempoRestante;
+
+                if (tempoRestante <= 0) {
+                    clearInterval(intervalo);
+                    jogoAtivo = false;
+                    alvo.style.display = "none";
+                    alert("Fim de jogo! Você fez " + pontos + " pontos!");
+                }
+            }, 1000);
+        }
+
+        iniciarJogo();
+    </script>
+</body>
+
+</html>
